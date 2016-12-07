@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jeu de combat</title>
+    <meta charset="utf-8" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+    <script>
+        (function ( $, Backbone )
+        {
+            // Données et models
+            /* Contact { id:1, nom:"ALLIOD", developpeur:"Sebastien" }  */
+            var GameModel = Backbone.Model.extend
+            (
+                {
+                    defaults :
+                    {
+                        nom: "",
+                        developpeur: ""
+                    }
+                }
+            );
+            /* ContactCollection [ new Contact(), new Contact() ]  */
+            var GamesCollection = Backbone.Collection.extend
+            (
+               {
+                    model : GameModel
+               }
+            );
+
+
+            //Données mockups correspondant à la liste des contacts
+            var games;
+
+            /**
+             * Document ready event
+             * alias de $(document).ready( function(){} );
+             */
+            $( function ()
+                {
+                    /**
+                     *  Réception des données du serveur
+                     *
+                     */
+                    var main = function()
+                    {
+                        games = new GamesCollection();
+                        games.add( new GameModel( { id:1, nom:"TEKKEN", developpeur:"BANDAI NAMCO" } ) );
+                        games.add( new GameModel( { id:2, nom:"STREET FIGHTER", developpeur:"CAPCOM" } ) );
+                        games.add( new GameModel( { id:3, nom:"MORTAL KOMBAT", developpeur:"MIDWAY" } ) );
+                        games.add( new GameModel( { id:4, nom:"JOJO's BIZARRE ADVENTURE", developpeur:"CYBERCONNECT2" } ) );
+						games.add( new GameModel( { id:4, nom:"GUILTY GEAR X", developpeur:"ARC SYSTEM WORK" } ) );
+
+                        // Annule le message de chargement
+                        $( "#loading").remove();
+
+                        // Renseigne les éléments de la liste
+                        var $game_list = $( "#game_list" );
+                        games.each
+                        (
+                            function( game )
+                            {
+                                $game_list.append
+                                (
+                                    "<li><a href='game.php?id="+ game.get( "id" ) +"'>"+
+                                            game.get( "nom" ) + " "+ game.get( "developpeur" ) +
+                                            "</a>" +
+                                    "</li>"
+                                );
+                            }
+                        );
+
+                    };
+
+
+                    $( "body" ).append( "<h1 id='loading'> Suuuuuuuuper !!!</h1>" );
+                    // Active une pseudo requête async HTTP
+                    setTimeout( main, 2000 );
+
+                }
+            );
+        })(jQuery, Backbone);
+
+    </script>
+</head>
+<body>
+<ul id="game_list">
+</ul>
+</body>
+</html>

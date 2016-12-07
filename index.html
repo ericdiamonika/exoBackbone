@@ -1,0 +1,69 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Jeu de combat</title>
+    <meta charset="utf-8" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+    <script>
+        (function ($)
+        {
+            //Données mocks object correspondant à la liste des contacts
+            var games;
+
+            /**
+             * Document ready event
+             * alias de $(document).ready( function(){} );
+             */
+            $( function ()
+            {
+                /**
+                 *  Réception des données du serveur
+                 *
+                 */
+                var main = function()
+                {
+                    // Liste de contacts json
+                    games =
+                    [
+                        { id:1, nom:"TEKKEN", developpeur:"BANDAI NAMCO" },
+                        { id:2, nom:"STREET FIGHTER",developpeur:"CAPCOM" },
+                        { id:3, nom:"MORTAL KOMBAT", developpeur:"MIDWAY" },
+                        { id:4, nom:"GUILTY GEAR X", developpeur:"ARC SYSTEM WORK" },
+                        { id:5, nom:"JOJO'S BIZARRE ADVENTURE", developpeur:"CYBERCONNECT2" }
+                    ];
+
+                    // Annule le message de chargement
+                    $( "#loading").remove();
+
+                    // Renseigne les éléments de la liste
+                    var $game_list = $( "#game_list")
+		                ,game;
+                    for( var i= 0, l = games.length; i<l; i++ )
+                    {
+                        game = games[i];
+                        $game_list.append
+                        (
+                           "<li><a href='games.php?id="+ game.id +"'>"+
+                                   game.nom + " "+ game.developpeur +
+                                "</a>" +
+                           "</li>"
+                        );
+                    }
+
+                };
+
+
+                $( "body" ).append( "<h1 id='loading'>SUUUUUUUUUPER !!!!</h1>" );
+                // Active une pseudo requête async HTTP
+                setTimeout( main, 3000 );
+            });
+        })(jQuery);
+
+    </script>
+</head>
+<body>
+<ul id="game_list">
+</ul>
+</body>
+</html>
